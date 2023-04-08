@@ -2,19 +2,48 @@
 
 using namespace ariel;
 
-Player::Player(){} //default constructor
 
-Player::Player (string name)  //constructor of Player class
+
+Player::Player (string name)  
 {
     this->playerName = name;
 }
 
-int Player::stacksize() // returns the amount of cards left
+int Player::stacksize() 
 {
-    return 1;
+    return this->playersStack.size();
 }
    
-int Player::cardesTaken() // returns the amount of cards this player has won
+int Player::cardesTaken() 
 {
-    return 1;
+    return this->numOfCardsTaken;
 }
+
+string Player::getName()
+{
+    return playerName;
+}
+
+
+void Player::updateCardsTaken()
+{
+    
+}
+
+void Player::updatePlayersStack()
+{
+    //playersStack.pop_back();
+}
+
+bool Player::playerIsInGame()
+{
+    return this->isInGame;
+}
+
+void Player::updatePlayersStatus(bool status)
+{
+    this->isInGame = status;
+}
+
+
+

@@ -23,8 +23,8 @@ enum Value
 
 namespace ariel
 {
-    string shape;
-    int num;
+    string shape; //CHECK IF NEEDED
+    int num; //CHECK IF NEEDED
 
     class Card 
     {

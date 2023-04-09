@@ -8,13 +8,13 @@ namespace ariel
 {
     class Player
     {
-        /*fields - private by default:*/
+        /*fields: */
+        public:
         string playerName; 
         int numOfCardsTaken; 
         bool isInGame = false;
-        public: vector <Card> playersStack;
+        vector <Card> playersStack;
     
-        public:
         /*constructor*/
         Player(string name); 
 

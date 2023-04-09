@@ -23,9 +23,6 @@ enum Value
 
 namespace ariel
 {
-    string shape; //CHECK IF NEEDED
-    int num; //CHECK IF NEEDED
-
     class Card 
     {
       //fields - private by default
@@ -47,6 +44,8 @@ namespace ariel
 
       //methodes
       string toString();
+
+      int cardCompare(Card c2);
 
     }; 
 }

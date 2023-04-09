@@ -12,8 +12,13 @@ namespace ariel
         Player &player1; 
         Player &player2; 
         vector <Card> &cards;
-        string lastTurn;
-        string log;
+        string lastTurn = "";
+        string log = "";
+        int numOfTurns = 0;
+        int numOfDraws = 0;
+        int p1_won = 0;
+        int p2_won = 0;
+
 
         /*private methods - to initialize the game: */
         
@@ -34,7 +39,7 @@ namespace ariel
 
         /*constructor: */
         public:
-        Game (Player &player1, Player &player2); 
+        Game (Player &player1, Player &player2);
 
         /*public methods: */
 

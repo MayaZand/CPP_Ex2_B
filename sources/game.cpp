@@ -7,7 +7,6 @@ using namespace ariel;
 Game::Game(Player &player1, Player &player2): player1(player1), player2(player2)
 {
     
-    
     if (player1.playerIsInGame()==true)
     {
         throw exception();
@@ -91,7 +90,6 @@ void Game::playTurn()
         player2.getName() + "played"  + c2.toString() + "." + "-p1 wins";
 
         this->p1_won++; 
-        this->numOfTurns++;
     }
     
     if (c1.cardCompare(c2)== -1) //option 2: player2 wins this turn
@@ -103,75 +101,77 @@ void Game::playTurn()
         player2.getName() + "played"  + c2.toString() + "." + "-p2 wins";
 
         this->p2_won++; 
-        this->numOfTurns++;
     }
     
     vector <Card> onTable;
     while (c1.cardCompare(c2)==0) //option 3: same card
     {
+        if (player1.stacksize()==0 || player2.stacksize()==0) //if no more cards left - deal the cards on table between the players.
+        {
+            dealCards(onTable);
+        }
+
         this->lastTurn += "tie - both players played:" + c1.toString();
         
 
-        onTable.push_back(player1.playersStack.back()); //put c1 on the table deck
+        onTable.push_back(player1.playersStack.back()); //put c1 on the table deck - upside down
         player1.playersStack.pop_back(); //get c1 out of player1 stack
-        onTable.push_back(player2.playersStack.back()); //put c2 on the table deck
+        onTable.push_back(player2.playersStack.back()); //put c2 on the table deck - upside down
         player2.playersStack.pop_back(); //get c2 out of player2 stack
 
-        Card newCard1 = player1.playersStack.back(); //open a new card (upsideDown)
-        Card newCard2 = player2.playersStack.back(); //open a new card (upsideDown)
+        this->numOfDraws++; 
 
-        player1.playersStack.pop_back(); //removes this card from the deck of p1
-        player2.playersStack.pop_back(); //removes this card from the deck of p2
-        
-
+        playTurn();
     }
     
     this->log += this->lastTurn + "\n"; //at the ent of this turn - updates log
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+    this->numOfTurns++;
+    onTable.clear;
 }
 
 void Game::printLastTurn ()
 {
-
+    cout << lastTurn << endl
 }
 
 void Game::playAll()
 {
-
+    while (player1.stacksize() >0 && player2.stacksize() >0)
+    {
+      playTurn();  
+    }
+    player1.isInGame(false);
+    player2.isInGame(false);
 }
 
 void Game::printWiner()
 {
-
+    if (p1_won > p2_won)
+    {
+        cout << player1.getName() + "is the winner" << endl
+    }
+    else if (p2_won > p1_won)
+    {
+        cout << player2.getName() + "is the winner" << endl
+    } 
+    else cout << "tie" << endl
 }
 
 void Game::printLog()
 {
-
+    cout << log << endl;
 }
 
 void Game::printStats()
 {
-
+    cout << "Player1 gameInfo: " << player1.getName() << endl;
+    cout << "Number of cards won: " << player1.cardesTaken() << endl;
+    cout << "Number of cards left: " << player1.stacksize() << endl;
+   
+    cout << "Player2 gameInfo: " << player2.getName() << endl;
+    cout << "Number of cards won: " << player2.cardesTaken() << endl;
+    cout << "Number of cards left: " << player2.stacksize() << endl;
+  
+    cout << "Total:" << numOfTurns + "turns and" + numOfDraws + "draws" << endl;
 }
 

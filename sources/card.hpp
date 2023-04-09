@@ -28,8 +28,6 @@ namespace ariel
       //fields - private by default
       Shape shapeOfCard; 
       Value valOfCard; 
-      //int numOfCards = 13;
-      //int numOfShapes = 4;
       
       public:
       //constructors & destructors

@@ -53,7 +53,5 @@ namespace ariel
         */
         void updatePlayersStatus(bool status);
 
-
-
     };
 }

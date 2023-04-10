@@ -8,7 +8,7 @@ namespace ariel
 {
     class Player
     {
-        /*fields: */
+        /* public fields: */
         public:
         string playerName; 
         int numOfCardsTaken; 
@@ -47,6 +47,5 @@ namespace ariel
         this method will update the status of each player when he joins or leaves the game
         */
         void updatePlayersStatus(bool status);
-
     };
 }

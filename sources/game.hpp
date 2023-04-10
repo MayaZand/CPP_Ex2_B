@@ -18,9 +18,6 @@ namespace ariel
         int numOfDraws = 0;
         int p1_won = 0;
         int p2_won = 0;
-
-
-        /*private methods - to initialize the game: */
         
         /*
         this method will initial the cards

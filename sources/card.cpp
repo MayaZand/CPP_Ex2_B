@@ -12,20 +12,10 @@ Shape Card::getShape()
     return shapeOfCard;
 }
 
-// void Card::setShape(Shape shape)
-// {  
-//     this->shapeOfCard = shape;
-// }
-
 Value Card::getVal()
 {
     return this->valOfCard;
 }
-
-// void Card::setVal(Value value)
-// {
-//     this->valOfCard = value;
-// }
 
 string Card::toString()
 {

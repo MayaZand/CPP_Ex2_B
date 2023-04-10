@@ -19,10 +19,12 @@ Game::Game(Player &player1, Player &player2) : player1(player1), player2(player2
         throw exception();
     }
     initCards();
+    
     unsigned seed = (unsigned)time(NULL);
     auto rng = default_random_engine(seed);
-    shuffle(cards.begin(), cards.end(), rng);
-    while (cards.size() != 0)
+    shuffle(cards.begin(), cards.end(), rng); //shuffeling the cards after initializing 
+    
+    while (cards.size() != 0) //dealing the deck of cards
     {
         for (int i = 0; i < cards.size() / 2; i++) // first half of the deck to the first player
         {
@@ -76,7 +78,8 @@ void Game::playTurn()
     vector<Card> onTable;
     this->lastTurn = player1.getName() + " played " + c1.toString() + " and " +
                      player2.getName() + " played " + c2.toString();
-    while (c1.cardCompare(c2) == 0)
+    
+    while (c1.cardCompare(c2) == 0) //option 1: draw
     {
         if (player1.stacksize() == 0 || player2.stacksize() == 0) // if no more cards left - deal the cards on table between the players.
         {
@@ -116,7 +119,7 @@ void Game::playTurn()
         this->numOfDraws++;
     }
 
-    if (c1.cardCompare(c2) == 1) // option 1: player1 wins this turn
+    if (c1.cardCompare(c2) == 1) // option 2: player1 wins this turn
     {
         player1.numOfCardsTaken++;
         player1.numOfCardsTaken++; // player1 will take the 2 cards
@@ -126,7 +129,7 @@ void Game::playTurn()
         this->p1_won++;
     }
 
-    if (c1.cardCompare(c2) == -1) // option 2: player2 wins this turn
+    if (c1.cardCompare(c2) == -1) // option 3: player2 wins this turn
     {
         player2.numOfCardsTaken++;
         player2.numOfCardsTaken++; // player2 will take the 2 cards
@@ -159,7 +162,7 @@ void Game::printWiner()
 {
     if (p1_won == 0 || p2_won == 0)
     {
-        throw logic_error("there is no winner yet!");
+        cout << "there is no winner yet!" << endl;
     }
     if (p1_won > p2_won)
     {

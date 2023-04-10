@@ -11,7 +11,7 @@ namespace ariel
         /*fields - private by default: */
         Player &player1; 
         Player &player2; 
-        vector <Card> &cards;
+        vector <Card> cards;
         string lastTurn = "";
         string log = "";
         int numOfTurns = 0;
@@ -28,16 +28,22 @@ namespace ariel
         void initCards();
         
         /*
-        this method will shuffle the main deck of cards
+        this method will shuffle the main deck of cards.
+        @param &cards is the reference to the main deck of cards.
         */
-        void shuffleCards(vector <Card> &cards);
+        void shuffleCards(vector <Card> cards);
 
         /*
-        this method will deal the deck of cards into 2 and give each player half of the deck
+        this method will deal the deck of cards into 2 and give each player half of the deck.
+        @param &cards is the reference to the main deck of cards.
         */
-        void dealCards(vector <Card> &cards);
+        void dealCards(vector <Card> cards);
 
-        /*constructor: */
+        /*
+        constructor (public):
+        @param &player1 is the reference to the first player
+        @param &player2 is the reference to the second player
+        */
         public:
         Game (Player &player1, Player &player2);
 
@@ -56,17 +62,17 @@ namespace ariel
         /*
         this method will play the game untill the end
         */
-        void playAll(); //playes the game untill the end
+        void playAll(); 
 
         /*
         this method prints the name of the winning player
         */
-        void printWiner(); // rints the name of the winning player
+        void printWiner(); 
 
         /*
         this method prints all the turns played one line per turn
         */
-        void printLog(); //prints all the turns played one line per turn
+        void printLog(); 
 
         /*
         this method prints basic statistics for each player

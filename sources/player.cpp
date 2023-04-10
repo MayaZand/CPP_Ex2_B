@@ -2,8 +2,6 @@
 
 using namespace ariel;
 
-
-
 Player::Player (string name)  
 {
     this->playerName = name;
@@ -22,17 +20,6 @@ int Player::cardesTaken()
 string Player::getName()
 {
     return playerName;
-}
-
-
-void Player::updateCardsTaken()
-{
-    
-}
-
-void Player::updatePlayersStack()
-{
-    //playersStack.pop_back();
 }
 
 bool Player::playerIsInGame()

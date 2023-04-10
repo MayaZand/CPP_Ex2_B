@@ -19,31 +19,31 @@ enum Value
   JACK,
   QUEEN, 
   KING
-  };
+};
 
 namespace ariel
 {
     class Card 
     {
-      //fields - private by default
+      /*fields - private by default: */
       Shape shapeOfCard; 
       Value valOfCard; 
       
       public:
-      //constructors & destructors
+      /*constructor: */
       Card (Shape shape, Value value);
-      //~Card();
+      
+      /*getters & setters: */
+      Shape getShape();
+      //void setShape(Shape shape);
+      Value getVal();
+      //void setVal(Value value);
 
-      //getters & setters
-      Shape getShape() {return shapeOfCard;}
-      void setShape(Shape shape);
-      Value getVal() {return valOfCard;}
-      void setVal(Value value);
-
-      //methodes
+      /*methods: */
       string toString();
-
       int cardCompare(Card c2);
+      string enumShapeToString (Shape shape);
+      string enumValToString (Value val); 
 
     }; 
 }

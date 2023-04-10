@@ -6,7 +6,6 @@ using namespace ariel;
 
 Game::Game(Player &player1, Player &player2): player1(player1), player2(player2)
 {
-    
     if (player1.playerIsInGame()==true)
     {
         throw exception();
@@ -38,22 +37,22 @@ void Game::initCards()
     }
 }
         
-void Game::shuffleCards(vector <Card> &cards)
+void Game::shuffleCards(vector <Card> cards)
 {
     random_shuffle(cards.begin(), cards.end());
 }
 
-void Game::dealCards(vector <Card> &cards)
+void Game::dealCards(vector <Card> cards)
 {
     while (cards.size()!=0)
     {
-        for(int i=0; i<cards.size()/2; i++)
+        for(int i=0; i<cards.size()/2; i++) //first half of the deck to the first player
         {
             player1.playersStack.push_back(cards.back());
             cards.pop_back();
         }
         
-        for (int j=cards.size()/2; j<cards.size(); j++)
+        for (int j=cards.size()/2; j<cards.size(); j++) //second half of the deck to the second player
         {
             player2.playersStack.push_back(cards.back());
             cards.pop_back();
@@ -61,13 +60,11 @@ void Game::dealCards(vector <Card> &cards)
     }
 }
 
-
 void Game::playTurn()
 {
-    /*error checks: */
     if (&player1 == &player2)
     {
-        throw logic_error("p1 and p2 cant be the same player.");
+        throw logic_error("p1 and p2 can't be the same player.");
     }
 
     if(numOfTurns>=26)
@@ -84,10 +81,10 @@ void Game::playTurn()
     if (c1.cardCompare(c2)== 1) //option 1: player1 wins this turn
     {
         player1.numOfCardsTaken++;
-        player1.numOfCardsTaken++; //player1 will take 2 cards
+        player1.numOfCardsTaken++; //player1 will take the 2 cards
       
-        this->lastTurn += player1.getName() + "played" + c1.toString() + "and" +  
-        player2.getName() + "played"  + c2.toString() + "." + "-p1 wins";
+        this->lastTurn += player1.getName() + " played " + c1.toString() + " and " +  
+        player2.getName() + " played "  + c2.toString() + "." + "-" + player1.getName() + " wins\n";
 
         this->p1_won++; 
     }
@@ -95,23 +92,23 @@ void Game::playTurn()
     if (c1.cardCompare(c2)== -1) //option 2: player2 wins this turn
     {
         player2.numOfCardsTaken++;
-        player2.numOfCardsTaken++; //player2 will take 2 cards
+        player2.numOfCardsTaken++; //player2 will take the 2 cards
       
-        this->lastTurn += player1.getName() + "played" + c1.toString() + "and" +  
-        player2.getName() + "played"  + c2.toString() + "." + "-p2 wins";
+        this->lastTurn += player1.getName() + " played " + c1.toString() + " and " +  
+        player2.getName() + " played "  + c2.toString() + "." + "-" + player2.getName() + " wins\n";
 
         this->p2_won++; 
     }
     
     vector <Card> onTable;
-    while (c1.cardCompare(c2)==0) //option 3: same card
+    while (c1.cardCompare(c2)==0) //option 3: same card - draw
     {
         if (player1.stacksize()==0 || player2.stacksize()==0) //if no more cards left - deal the cards on table between the players.
         {
             dealCards(onTable);
         }
 
-        this->lastTurn += "tie - both players played:" + c1.toString();
+        this->lastTurn += "draw - both players played:" + c1.toString();
         
 
         onTable.push_back(player1.playersStack.back()); //put c1 on the table deck - upside down
@@ -121,17 +118,16 @@ void Game::playTurn()
 
         this->numOfDraws++; 
 
-        playTurn();
+        playTurn(); //recursively
     }
     
-    this->log += this->lastTurn + "\n"; //at the ent of this turn - updates log
+    this->log += this->lastTurn + "\n"; //at the end of each turn - update log
     this->numOfTurns++;
-    onTable.clear;
 }
 
 void Game::printLastTurn ()
 {
-    cout << lastTurn << endl
+    cout << this->lastTurn << endl;
 }
 
 void Game::playAll()
@@ -140,26 +136,30 @@ void Game::playAll()
     {
       playTurn();  
     }
-    player1.isInGame(false);
-    player2.isInGame(false);
+    player1.updatePlayersStatus(false);
+    player2.updatePlayersStatus(false);
 }
 
 void Game::printWiner()
 {
+    if (p1_won==0 || p2_won==0)
+    {
+        throw logic_error ("there is no winner yet!");
+    }
     if (p1_won > p2_won)
     {
-        cout << player1.getName() + "is the winner" << endl
+        cout << player1.getName() + "is the winner" << endl;
     }
     else if (p2_won > p1_won)
     {
-        cout << player2.getName() + "is the winner" << endl
+        cout << player2.getName() + "is the winner" << endl;
     } 
-    else cout << "tie" << endl
+    else cout << "draw" << endl;
 }
 
 void Game::printLog()
 {
-    cout << log << endl;
+    cout << this->log << endl;
 }
 
 void Game::printStats()
@@ -172,6 +172,6 @@ void Game::printStats()
     cout << "Number of cards won: " << player2.cardesTaken() << endl;
     cout << "Number of cards left: " << player2.stacksize() << endl;
   
-    cout << "Total:" << numOfTurns + "turns and" + numOfDraws + "draws" << endl;
+    cout << "Total:" << to_string(numOfTurns) + "turns and" + to_string(numOfDraws) + "draws" << endl;
 }
 

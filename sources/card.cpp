@@ -1,38 +1,35 @@
 #include "card.hpp"
 using namespace ariel;
 
-//constructor:
 Card::Card (Shape shape, Value value)
 {
     this->shapeOfCard = shape;
     this->valOfCard = value;
-};
+}
 
-//getters & setters
 Shape Card::getShape()
 {
     return shapeOfCard;
 }
 
-void Card::setShape(Shape shape)
-{  
-    this->shapeOfCard = shape;
-}
+// void Card::setShape(Shape shape)
+// {  
+//     this->shapeOfCard = shape;
+// }
 
 Value Card::getVal()
 {
     return this->valOfCard;
 }
 
-void Card::setVal(Value value)
-{
-    this->valOfCard = value;
-}
+// void Card::setVal(Value value)
+// {
+//     this->valOfCard = value;
+// }
 
-//methods:
 string Card::toString()
 {
-    return getVal()+ "of" + getShape();
+    return enumValToString(getVal()) + " of " + enumShapeToString(getShape());
 }
 
 int Card::cardCompare(Card c2)
@@ -41,8 +38,8 @@ int Card::cardCompare(Card c2)
     {
         return 1;
     }
-    if (this->valOfCard !=2 && c2.getVal()==1)
-    { //Ace wins all but 2
+    if (this->valOfCard !=2 && c2.getVal()==1) //Ace wins all but 2
+    { 
         return -1;
     }
     if (this->getVal()==c2.getVal()) //both cards are equal
@@ -54,6 +51,55 @@ int Card::cardCompare(Card c2)
         return 1;
     }
     else return -1; //c2 wins
+}
+
+string Card::enumShapeToString (Shape shape) 
+{
+    switch (shape)
+    {
+        case Shape::HEARTS:
+            return "HEARTS";
+        case Shape::CLUBS:
+            return "CLUBS";
+        case Shape::SPADES:
+            return "SPADES";
+        case Shape::DIAMONDS:
+            return "DIAMONDS";
+   
+    }
+}
+
+string Card::enumValToString (Value val)  
+{
+    switch (val)
+    {
+        case Value::ACE:
+            return "ACE";
+        case Value::TWO:
+            return "TWO";
+        case Value::THREE:
+            return "THREE";
+        case Value::FOUR:
+            return "FOUR";
+         case Value::FIVE:
+            return "FIVE";
+         case Value::SIX:
+            return "SIX";
+         case Value::SEVEN:
+            return "SEVEN";
+         case Value::EIGHT:
+            return "EIGHT";
+         case Value::NINE:
+            return "NINE";
+         case Value::TEN:
+            return "TEN";
+         case Value::JACK:
+            return "JACK";
+         case Value::QUEEN:
+            return "QUEEN";
+         case Value::KING:
+            return "KING";
+    }
 }
 
 

@@ -13,18 +13,23 @@ namespace ariel
         string playerName; 
         int numOfCardsTaken; 
         bool isInGame = false;
-        vector <Card> playersStack;
+        vector <Card> playersStack; //represents the stack of each player
     
-        /*constructor*/
+        /*
+        constructor:
+        @param name is the name of the player.
+        */
         Player(string name); 
 
-        /*getters & setters*/
-        string getName();
-
-        /*methods*/
+        /*methods: */
         
         /*
-        @return the amount of cards left
+        @return the name of the player
+        */
+        string getName();
+
+        /*
+        @return the amount of cards left to the player
         */
         int stacksize(); 
         
@@ -32,16 +37,6 @@ namespace ariel
         @return the amount of cards this player has won
         */
         int cardesTaken(); 
-
-        /*
-        this method will update the number of cards that the player took
-        */
-        void updateCardsTaken();
-
-        /*
-        this method will update the deck of cards 
-        */
-        void updatePlayersStack();
 
         /*
         @return true if this player is already playing, and false otherwise

@@ -34,23 +34,18 @@ string Card::toString()
 
 int Card::cardCompare(Card c2)
 {
-    if (this->getVal() ==1 && c2.getVal()!=2) //Ace wins all but 2
-    {
-        return 1;
-    }
-    if (this->valOfCard !=2 && c2.getVal()==1) //Ace wins all but 2
-    { 
-        return -1;
-    }
     if (this->getVal()==c2.getVal()) //both cards are equal
     {
         return 0;
     }
-    if (this->getVal() > c2.getVal()) //c1 wins
+    else if ((this->getVal() ==1 && c2.getVal()!=2) || (this->getVal() > c2.getVal())) //Ace wins all but 2
     {
         return 1;
     }
-    else return -1; //c2 wins
+    else
+    { 
+        return -1;
+    }
 }
 
 string Card::enumShapeToString (Shape shape) 

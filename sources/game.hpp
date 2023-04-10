@@ -26,18 +26,6 @@ namespace ariel
         this method will initial the cards
         */
         void initCards();
-        
-        /*
-        this method will shuffle the main deck of cards.
-        @param &cards is the reference to the main deck of cards.
-        */
-        void shuffleCards(vector <Card> cards);
-
-        /*
-        this method will deal the deck of cards into 2 and give each player half of the deck.
-        @param &cards is the reference to the main deck of cards.
-        */
-        void dealCards(vector <Card> cards);
 
         /*
         constructor (public):

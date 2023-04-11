@@ -19,7 +19,12 @@ int Player::cardesTaken()
 
 string Player::getName()
 {
-    return playerName;
+    return this->playerName;
+}
+
+vector <Card>& Player:: getPlayersStack()
+{
+    return this->playersStack;
 }
 
 bool Player::playerIsInGame()

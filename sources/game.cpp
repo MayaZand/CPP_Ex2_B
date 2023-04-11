@@ -25,9 +25,9 @@ Game::Game(Player &player1, Player &player2) : player1(player1), player2(player2
 
     for (int i = 0; i < 26; i++)
     {
-        player1.playersStack.push_back(cards.back());
+        player1.getPlayersStack().push_back(cards.back());
         this->cards.pop_back();
-        player2.playersStack.push_back(cards.back());
+        player2.getPlayersStack().push_back(cards.back());
         this->cards.pop_back();
     }
 
@@ -67,20 +67,11 @@ void Game::playTurn()
         throw logic_error("can't play - player don't have cards.");
     }
 
-    Card c1 = player1.playersStack.back(); // open a new card
-    Card c2 = player2.playersStack.back(); // open a new card
+    Card c1 = player1.getPlayersStack().back(); // open a new card
+    Card c2 = player2.getPlayersStack().back(); // open a new card
 
-    // For debugging purposes only
-    // cout << "Stats:" << endl;
-    // cout << "p1.cardesTaken() = " << player1.cardesTaken() << 
-    // "; p1.stacksize() = " << player1.stacksize() << 
-    // "; p2.cardesTaken() = " << player2.cardesTaken() << 
-    // "; p2.stacksize() = " << player2.stacksize() << 
-    // "; sum = " << (player1.cardesTaken() + player2.cardesTaken() + player1.stacksize() + player2.stacksize()) 
-    // << endl;
-
-    player1.playersStack.pop_back(); // removes this card from the deck of p1
-    player2.playersStack.pop_back(); // removes this card from the deck of p2
+    player1.getPlayersStack().pop_back(); // removes this card from the deck of p1
+    player2.getPlayersStack().pop_back(); // removes this card from the deck of p2
 
     vector<Card> onTable;
     this->lastTurn = player1.getName() + " played " + c1.toString() + " and " +
@@ -107,20 +98,22 @@ void Game::playTurn()
 
         this->lastTurn += "\ndraw - both players played:" + c1.toString() + "\n";
 
-        onTable.push_back(player1.playersStack.back()); // put c1 on the table deck - upside down
-        player1.playersStack.pop_back();                // get c1 out of player1 stack
-        onTable.push_back(player2.playersStack.back()); // put c2 on the table deck - upside down
-        player2.playersStack.pop_back();                // get c2 out of player2 stack
+        onTable.push_back(player1.getPlayersStack().back()); // put c1 on the table deck - upside down
+        player1.getPlayersStack().pop_back();                // get c1 out of player1 stack
+        onTable.push_back(player2.getPlayersStack().back()); // put c2 on the table deck - upside down
+        player2.getPlayersStack().pop_back();                // get c2 out of player2 stack
 
         // Pop new cards
-        c1 = player1.playersStack.back();
-        c2 = player2.playersStack.back();
-        player1.playersStack.pop_back();
-        player2.playersStack.pop_back();
+        c1 = player1.getPlayersStack().back();
+        c2 = player2.getPlayersStack().back();
+        player1.getPlayersStack().pop_back();
+        player2.getPlayersStack().pop_back();
 
         this->lastTurn += player1.getName() + " played " + c1.toString() + " and " + player2.getName() + " played " + c2.toString();
 
         this->numOfDraws++;
+        player1.updatePlayersStatus(false);
+        player2.updatePlayersStatus(false);
     }
 
     if (c1.cardCompare(c2) == 1) // option 2: player1 wins this turn

@@ -8,17 +8,17 @@ namespace ariel
 {
     class Player
     {
-        /* public fields: */
-        public:
+        /*fields: */
         string playerName = " ";
         int numOfCardsTaken = 0;
         bool isInGame = false;
-        vector <Card> playersStack; //represents the stack of each player
+        vector <Card> playersStack; // represents the stack of each player
     
         /*
         constructor:
         @param name is the name of the player.
         */
+        public:
         Player(string name); 
 
         /*methods: */
@@ -27,6 +27,11 @@ namespace ariel
         @return the name of the player.
         */
         string getName();
+
+        /*
+        @return the player's stack of cards
+        */
+        vector <Card>& getPlayersStack();
 
         /*
         @return the amount of cards left to the player.
@@ -52,5 +57,6 @@ namespace ariel
         this mwthod updates the number of cards that the player took.
         */
         void updateNumOfCardsTaken();
+
     };
 }

@@ -1,3 +1,7 @@
+/*
+During the preparation of this assignment i got help from Roy Simanovich and Ofir Shitrit 
+*/
+
 #include "game.hpp"
 #include "player.hpp"
 #include <iostream>

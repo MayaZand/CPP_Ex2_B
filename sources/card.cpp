@@ -22,13 +22,13 @@ string Card::toString()
     return enumValToString(getVal()) + " of " + enumShapeToString(getShape());
 }
 
-int Card::cardCompare(Card c2)
+int Card::cardCompare(Card card2)
 {
-    if (this->getVal()==c2.getVal()) //both cards are equal
+    if (this->getVal()==card2.getVal()) //both cards are equal
     {
         return 0;
     }
-    else if ((this->getVal() ==1 && c2.getVal()!=2) || (this->getVal() > c2.getVal())) //Ace wins all but 2
+    else if ((this->getVal() ==1 && card2.getVal()!=2) || (this->getVal() > card2.getVal())) //Ace wins all but 2
     {
         return 1;
     }

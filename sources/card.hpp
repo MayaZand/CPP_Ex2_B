@@ -59,7 +59,7 @@ namespace ariel
       @param c2 is the card that the method compare with.
       @return 1 if c1 is stronger than c2, -1 if c2 is stronger than c1 and 0 otherwise
       */
-      int cardCompare(Card c2);
+      int cardCompare(Card card2);
 
       /*
       @return a string thay represents the enum word of the shape

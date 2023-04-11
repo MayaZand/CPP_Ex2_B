@@ -12,8 +12,8 @@ namespace ariel
         Player &player1; 
         Player &player2; 
         vector <Card> cards;
-        string lastTurn = "";
-        string log = "";
+        string lastTurn;
+        string log;
         int numOfTurns = 0;
         int numOfDraws = 0;
         int p1_won = 0;

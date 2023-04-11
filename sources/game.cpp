@@ -9,35 +9,28 @@ using namespace ariel;
 
 Game::Game(Player &player1, Player &player2) : player1(player1), player2(player2)
 {
-    if (player1.playerIsInGame() == true)
+    if (player1.playerIsInGame() == true || player2.playerIsInGame() == true)
     {
         throw exception();
     }
 
-    if (player2.playerIsInGame() == true)
-    {
-        throw exception();
-    }
     initCards();
-    
+
+    /*shuffeling the cards after initializing: */
     unsigned seed = (unsigned)time(NULL);
     auto rng = default_random_engine(seed);
-    shuffle(cards.begin(), cards.end(), rng); //shuffeling the cards after initializing 
-    
-    while (cards.size() != 0) //dealing the deck of cards
-    {
-        for (int i = 0; i < cards.size() / 2; i++) // first half of the deck to the first player
-        {
-            player1.playersStack.push_back(cards.back());
-            cards.pop_back();
-        }
+    shuffle(cards.begin(), cards.end(), rng);
 
-        for (int j = cards.size() / 2; j < cards.size(); j++) // second half of the deck to the second player
-        {
-            player2.playersStack.push_back(cards.back());
-            cards.pop_back();
-        }
+    /*dealing the deck of cards: */
+
+    for (int i = 0; i < 26; i++)
+    {
+        player1.playersStack.push_back(cards.back());
+        this->cards.pop_back();
+        player2.playersStack.push_back(cards.back());
+        this->cards.pop_back();
     }
+
     player1.updatePlayersStatus(true);
     player2.updatePlayersStatus(true);
 }
@@ -59,18 +52,32 @@ void Game::initCards()
 
 void Game::playTurn()
 {
+    if (this->numOfTurns >= 26)
+    {
+        throw logic_error("can't play more than 26 turns.");
+    }
+
     if (&player1 == &player2)
     {
         throw logic_error("p1 and p2 can't be the same player.");
     }
 
-    if (numOfTurns >= 26)
+    if (player1.stacksize() == 0 || player2.stacksize() == 0)
     {
-        throw logic_error("the game is over after 26 turns.");
+        throw logic_error("can't play - player don't have cards.");
     }
 
     Card c1 = player1.playersStack.back(); // open a new card
     Card c2 = player2.playersStack.back(); // open a new card
+
+    // For debugging purposes only
+    // cout << "Stats:" << endl;
+    // cout << "p1.cardesTaken() = " << player1.cardesTaken() << 
+    // "; p1.stacksize() = " << player1.stacksize() << 
+    // "; p2.cardesTaken() = " << player2.cardesTaken() << 
+    // "; p2.stacksize() = " << player2.stacksize() << 
+    // "; sum = " << (player1.cardesTaken() + player2.cardesTaken() + player1.stacksize() + player2.stacksize()) 
+    // << endl;
 
     player1.playersStack.pop_back(); // removes this card from the deck of p1
     player2.playersStack.pop_back(); // removes this card from the deck of p2
@@ -78,25 +85,23 @@ void Game::playTurn()
     vector<Card> onTable;
     this->lastTurn = player1.getName() + " played " + c1.toString() + " and " +
                      player2.getName() + " played " + c2.toString();
-    
-    while (c1.cardCompare(c2) == 0) //option 1: draw
-    {
-        if (player1.stacksize() == 0 || player2.stacksize() == 0) // if no more cards left - deal the cards on table between the players.
-        {
-            while (onTable.size() != 0)
-            {
-                for (int i = 0; i < onTable.size() / 2; i++) // first half of the deck to the first player
-                {
-                    player1.playersStack.push_back(onTable.back());
-                    onTable.pop_back();
-                }
 
-                for (int j = onTable.size() / 2; j < onTable.size(); j++) // second half of the deck to the second player
-                {
-                    player2.playersStack.push_back(onTable.back());
-                    onTable.pop_back();
-                }
+    while (c1.cardCompare(c2) == 0) // option 1: draw
+    {
+        onTable.push_back(c1);
+        onTable.push_back(c2);
+
+        /*if no more cards left - deal the cards on table between the players:*/
+        if (player1.stacksize() <= 2 || player2.stacksize() <= 2)
+        {
+            if (!onTable.empty())
+            {
+                player1.updateNumOfCardsTaken();
+                onTable.pop_back();
+                player2.updateNumOfCardsTaken();
+                onTable.pop_back();
             }
+
             break;
         }
 
@@ -110,7 +115,6 @@ void Game::playTurn()
         // Pop new cards
         c1 = player1.playersStack.back();
         c2 = player2.playersStack.back();
-
         player1.playersStack.pop_back();
         player2.playersStack.pop_back();
 
@@ -121,18 +125,30 @@ void Game::playTurn()
 
     if (c1.cardCompare(c2) == 1) // option 2: player1 wins this turn
     {
-        player1.numOfCardsTaken++;
-        player1.numOfCardsTaken++; // player1 will take the 2 cards
+        player1.updateNumOfCardsTaken();
+        player1.updateNumOfCardsTaken(); // player1 will take the 2 cards
+
+        if (!onTable.empty())
+        {
+            onTable.pop_back();
+            player1.updateNumOfCardsTaken();
+        }
 
         this->lastTurn += "-" + player1.getName() + " wins\n";
 
         this->p1_won++;
     }
 
-    if (c1.cardCompare(c2) == -1) // option 3: player2 wins this turn
+    else if (c1.cardCompare(c2) == -1) // option 3: player2 wins this turn
     {
-        player2.numOfCardsTaken++;
-        player2.numOfCardsTaken++; // player2 will take the 2 cards
+        player2.updateNumOfCardsTaken();
+        player2.updateNumOfCardsTaken(); // player2 will take the 2 cards
+
+        if (!onTable.empty())
+        {
+            onTable.pop_back();
+            player2.updateNumOfCardsTaken();
+        }
 
         this->lastTurn += "-" + player2.getName() + " wins\n";
 
@@ -162,18 +178,18 @@ void Game::printWiner()
 {
     if (p1_won == 0 || p2_won == 0)
     {
-        cout << "there is no winner yet!" << endl;
+        cout << " there is no winner yet! " << endl;
     }
     if (p1_won > p2_won)
     {
-        cout << player1.getName() + "is the winner" << endl;
+        cout << player1.getName() + " is the winner " << endl;
     }
     else if (p2_won > p1_won)
     {
-        cout << player2.getName() + "is the winner" << endl;
+        cout << player2.getName() + " is the winner " << endl;
     }
     else
-        cout << "draw" << endl;
+        cout << " draw " << endl;
 }
 
 void Game::printLog()
@@ -183,7 +199,8 @@ void Game::printLog()
 
 void Game::printStats()
 {
-    cout << "Game Info: " << "\nplayer's name: " <<  player1.getName() << endl;
+    cout << "Game Info: "
+         << "\nplayer's name: " << player1.getName() << endl;
     cout << "Number of cards won: " << player1.cardesTaken() << endl;
     cout << "Number of cards left: " << player1.stacksize() << endl;
 
@@ -191,5 +208,5 @@ void Game::printStats()
     cout << "Number of cards won: " << player2.cardesTaken() << endl;
     cout << "Number of cards left: " << player2.stacksize() << endl;
 
-    cout << "\nTotal:" << to_string(numOfTurns) << " turns and " << to_string(numOfDraws) << " draws" << endl;
+    cout << "\nTotal: " << to_string(numOfTurns) << " turns and " << to_string(numOfDraws) << " draws" << endl;
 }

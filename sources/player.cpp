@@ -32,5 +32,10 @@ void Player::updatePlayersStatus(bool status)
     this->isInGame = status;
 }
 
+void Player::updateNumOfCardsTaken()
+{
+    this->numOfCardsTaken++;
+}
+
 
 

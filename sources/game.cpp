@@ -11,7 +11,7 @@ Game::Game(Player &player1, Player &player2) : player1(player1), player2(player2
 {
     if (player1.playerIsInGame() == true || player2.playerIsInGame() == true)
     {
-        throw exception();
+        throw logic_error ("the players are already in game.");
     }
 
     initCards();
@@ -128,7 +128,7 @@ void Game::playTurn()
         player1.updateNumOfCardsTaken();
         player1.updateNumOfCardsTaken(); // player1 will take the 2 cards
 
-        if (!onTable.empty())
+        while (!onTable.empty())
         {
             onTable.pop_back();
             player1.updateNumOfCardsTaken();
@@ -144,7 +144,7 @@ void Game::playTurn()
         player2.updateNumOfCardsTaken();
         player2.updateNumOfCardsTaken(); // player2 will take the 2 cards
 
-        if (!onTable.empty())
+        while (!onTable.empty())
         {
             onTable.pop_back();
             player2.updateNumOfCardsTaken();
@@ -176,10 +176,6 @@ void Game::playAll()
 
 void Game::printWiner()
 {
-    if (p1_won == 0 || p2_won == 0)
-    {
-        cout << " there is no winner yet! " << endl;
-    }
     if (p1_won > p2_won)
     {
         cout << player1.getName() + " is the winner " << endl;
@@ -188,8 +184,7 @@ void Game::printWiner()
     {
         cout << player2.getName() + " is the winner " << endl;
     }
-    else
-        cout << " draw " << endl;
+    else cout << " draw " << endl;
 }
 
 void Game::printLog()
@@ -199,14 +194,18 @@ void Game::printLog()
 
 void Game::printStats()
 {
-    cout << "Game Info: "
+    cout << "Game Info:\n "
          << "\nplayer's name: " << player1.getName() << endl;
+    cout << "Win rate: " << this->p1_won << endl;
     cout << "Number of cards won: " << player1.cardesTaken() << endl;
     cout << "Number of cards left: " << player1.stacksize() << endl;
 
     cout << "\nplayer's name: " << player2.getName() << endl;
+    cout << "Win rate: " << this->p2_won << endl;
     cout << "Number of cards won: " << player2.cardesTaken() << endl;
     cout << "Number of cards left: " << player2.stacksize() << endl;
 
+    cout << "\nNumber of draws: " << this->numOfDraws << endl;
+    cout << "Draw rate: " << ((double)this->numOfDraws / this->numOfTurns)*100 << "%" << endl;
     cout << "\nTotal: " << to_string(numOfTurns) << " turns and " << to_string(numOfDraws) << " draws" << endl;
 }

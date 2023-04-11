@@ -83,7 +83,7 @@ void Game::playTurn()
         onTable.push_back(c2);
 
         /*if no more cards left - deal the cards on table between the players:*/
-        if (player1.stacksize() <= 2 || player2.stacksize() <= 2)
+        if (player1.stacksize() <= 1 || player2.stacksize() <= 1)
         {
             if (!onTable.empty())
             {
